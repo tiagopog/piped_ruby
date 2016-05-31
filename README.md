@@ -26,9 +26,38 @@ Or install it yourself as:
 
     $ gem install piped_ruby
 
+And require the gem manually:
+
+```ruby
+require 'piped_ruby'
+```
+
+
 ## Usage
 
-TODO: Write usage instructions here
+Print max element of a given array:
+```ruby
+array = [1, 3, 2, 5]
+-> { array }.| { |e| e.length == 4 ? e.push(4) : e }
+             .| { |e| e.max }
+             .| { |e| puts e } # Prints: 5
+```
+
+Making some fun with strings:
+```ruby
+module Foo
+  class << self
+    def number; 1 end
+    def answer(x); "So the answer of the life, the universe and everything is... #{x}!" end
+  end
+end
+
+-> { Foo.number }.| { |e| e + 1 }
+                 .| { |e| e * 21 }
+                 .| { |e| Foo.answer(e) }
+                 .| { |e| e + ' :-)' }
+                 .| { |e| puts(e) } # Prints: So the answer of the life, the universe and everything is... 42!"
+```
 
 
 ## Contributing
