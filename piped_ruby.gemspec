@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{Piped Ruby is a tiny piece of code that brings an awesome feature to Ruby: pipe operators.}
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
-
+0
   # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
   # delete this section to allow pushing this gem to any host.
   if spec.respond_to?(:metadata)
