@@ -39,7 +39,7 @@ Print max element of a given array:
 array = [1, 3, 2, 5]
 -> { array }.| { |e| e.length == 4 ? e.push(4) : e }
             .| { |e| e.max }
-            .| { |e| puts e } # Prints: 5
+            .| { |e| puts e } # 5
 ```
 
 Making some fun with strings:
@@ -55,7 +55,7 @@ end
                  .| { |e| e * 21 }
                  .| { |e| Foo.answer(e) }
                  .| { |e| e + ' :-)' }
-                 .| { |e| puts(e) } # Prints: So the answer of the life, the universe and everything is... 42! :-)"
+                 .| { |e| puts(e) } # So the answer of the life, the universe and everything is... 42! :-)"
 ```
 
 
