@@ -2,8 +2,9 @@
 
 ```ruby
 -> { "Pipe" }.| { |e| "#{e} things"  }
-             .| { |e| "#{e} in Ruby!" }
-             .| { |e| puts e } # Pipe things in Ruby!
+             .| { |e| "#{e} in Ruby! " }
+             .| { |e| e =~ /ruby/i ? e * 2 : e }
+             .unwrap #=> "Pipe things in Ruby! Pipe things in Ruby! "
 ```
 
 Piped Ruby is a tiny piece of code that brings an awesome feature to Ruby: pipe operators.
@@ -34,15 +35,34 @@ require 'piped_ruby'
 
 ## Usage
 
-Print max element of a given array:
+Pipe operations happen between Proc objects (blocks). After requiring the gem every Proc in your Ruby program will be capable to start a pipe operation.
+
 ```ruby
-array = [1, 3, 2, 5]
--> { array }.| { |e| e.length == 4 ? e.push(4) : e }
-            .| { |e| e.max }
-            .| { |e| puts e } # 5
+operation = -> { 'Foo' }.| { |e| "#{e}bar" }
+operation.class #=> Proc
+operation.unwrap #=> "Foobar"
 ```
 
-Making some fun with strings:
+The `PipedRuby#unwrap` method is the way to get the returning value from the last evaluated block:
+
+```ruby
+operation = -> { 'Foo' }.| { |e| "#{e}bar" }
+operation.| { |e| puts e } #=> Prints "Foobar" and returns a Proc object
+operation.| { |e| puts e }.unwrap #=> Prints "Foobar" and returns nil
+```
+
+
+## Examples
+
+Get max element of a given array:
+```ruby
+array = [1, 2, 3, 4]
+-> { array }.| { |e| e.length == 4 ? e.push(5) : e }
+            .| { |e| e.max }
+            .unwrap #=> 5
+```
+
+Get some cool quote:
 ```ruby
 module Foo
   class << self
@@ -55,9 +75,8 @@ end
                  .| { |e| e * 21 }
                  .| { |e| Foo.answer(e) }
                  .| { |e| e + ' :-)' }
-                 .| { |e| puts(e) } # So the answer of the life, the universe and everything is... 42! :-)"
+                 .unwrap #=> "So the answer of the life, the universe and everything is... 42! :-)"
 ```
-
 
 ## Contributing
 
