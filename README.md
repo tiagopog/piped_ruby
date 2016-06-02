@@ -2,7 +2,7 @@
 
 ```ruby
 -> { "Pipe" }.| { |e| "#{e} things"  }
-             .| { |e| "#{e} in Ruby! " }
+             .| { |e| "#{e} in Ruby!" }
              .unwrap #=> "Pipe things in Ruby!"
 ```
 
@@ -50,6 +50,31 @@ a = some_text.upcase
 b = MyModule.method_a(a)
 c = MyModule.method_b(b, "something")
 d = MyModule.method_c(c) { |c| do_something3(c) }
+```
+
+### More examples
+
+Get max element of a given array:
+```ruby
+-> { [1, 2, 3, 4] }.| { |e| e.length == 4 ? e.push(5) : e }
+                   .| { |e| e.max }
+                   .unwrap #=> 5
+```
+
+Work with strings:
+```ruby
+module Foo
+  class << self
+    def number; 1 end
+    def answer(x); "So the answer of the life, the universe and everything is... #{x}!" end
+  end
+end
+
+-> { Foo.number }.| { |e| e + 1 }
+                 .| { |e| e * 21 }
+                 .| { |e| Foo.answer(e) }
+                 .| { |e| e + ' :-)' }
+                 .unwrap #=> "So the answer of the life, the universe and everything is... 42! :-)"
 ```
 
 ## Backstage
