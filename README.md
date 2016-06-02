@@ -6,9 +6,9 @@
              .unwrap #=> "Pipe things in Ruby!"
 ```
 
-Piped Ruby is a tiny piece of software that tries to bring an awesome feature to Ruby: pipe operations.
+Piped Ruby is a tiny piece of code that tries to bring an awesome feature to Ruby: pipe operations.
 
-Credit to [Elixir's Pipe Operator](http://elixir-lang.org/getting-started/enumerables-and-streams.html#the-pipe-operator) and [Chainable Methods](https://github.com/akitaonrails/chainable_methods) Ruby gem which were the source of inspiration for this gem :-)
+Credit to [Elixir's Pipe Operator](http://elixir-lang.org/getting-started/enumerables-and-streams.html#the-pipe-operator) and [Chainable Methods](https://github.com/akitaonrails/chainable_methods) gem which were the source of inspiration for this gem :-)
 
 ## Installation
 
@@ -43,7 +43,7 @@ With Piped Ruby doing this:
                        .unwrap
 ```
 
-Is equivalent to this:
+...is equivalent to this:
 
 ```ruby
 a = some_text.upcase
