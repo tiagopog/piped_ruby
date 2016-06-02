@@ -72,7 +72,7 @@ operation.| { |e| puts e }.unwrap #=> Prints "Foobar" and returns nil
 
 ## TODO
 
-- [ ] Write more cool examples in the README;
+- [ ] Write more cool examples in README;
 - [ ] Introduce something similar to Elixir's Streams.
 
 ## Contributing
