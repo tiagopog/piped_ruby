@@ -9,7 +9,7 @@
 
 Piped Ruby is a tiny piece of code that brings an awesome feature to Ruby: pipe operators.
 
-Credit to [Elixir's pipe operator](http://elixir-lang.org/getting-started/enumerables-and-streams.html#the-pipe-operator) that is the source of inspiration for this gem :-)
+Credit to [Elixir's Pipe Operator](http://elixir-lang.org/getting-started/enumerables-and-streams.html#the-pipe-operator) and [Chainable Methods](https://github.com/akitaonrails/chainable_methods) Ruby gem which are the source of inspiration for this gem :-)
 
 ## Installation
 
@@ -35,6 +35,26 @@ require 'piped_ruby'
 
 ## Usage
 
+With PipedRuby doing this:
+
+```ruby
+-> { some_text.upcase }.| { |e| MyModule.method_a(e)  }
+                       .| { |e| MyModule.method_b(e, "something") }
+                       .| { |e| MyModule.method_c(e) { |c| do_something3(c) } }
+                       .unwrap
+```
+
+Is equivalent to this:
+
+```ruby
+a = some_text.upcase
+b = MyModule.method_a(a)
+c = MyModule.method_b(b, "something")
+d = MyModule.method_c(c) { |c| do_something3(c) }
+```
+
+## Backstage
+
 Pipe operations happen between Proc objects (blocks). After requiring the gem every Proc in your Ruby program will be capable to start a pipe operation.
 
 ```ruby
@@ -51,32 +71,10 @@ operation.| { |e| puts e } #=> Prints "Foobar" and returns a Proc object
 operation.| { |e| puts e }.unwrap #=> Prints "Foobar" and returns nil
 ```
 
+## TODO
 
-## Examples
-
-Get max element of a given array:
-```ruby
-array = [1, 2, 3, 4]
--> { array }.| { |e| e.length == 4 ? e.push(5) : e }
-            .| { |e| e.max }
-            .unwrap #=> 5
-```
-
-Get some cool quote:
-```ruby
-module Foo
-  class << self
-    def number; 1 end
-    def answer(x); "So the answer of the life, the universe and everything is... #{x}!" end
-  end
-end
-
--> { Foo.number }.| { |e| e + 1 }
-                 .| { |e| e * 21 }
-                 .| { |e| Foo.answer(e) }
-                 .| { |e| e + ' :-)' }
-                 .unwrap #=> "So the answer of the life, the universe and everything is... 42! :-)"
-```
+- [ ] Write more cool examples in the README;
+- [ ] Introduce something similar to Elixir's Streams.
 
 ## Contributing
 
