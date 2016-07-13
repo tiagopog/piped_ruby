@@ -47,7 +47,7 @@ With Piped Ruby doing this:
   .>> { |e| MyModule.method_c(e) { |c| do_something3(c) } }.unwrap
 ```
 
-...is equivalent to this:
+...is the same of doing this:
 
 ```ruby
 a = some_text.upcase
@@ -56,41 +56,33 @@ c = MyModule.method_b(b, "something")
 d = MyModule.method_c(c) { |c| do_something3(c) }
 ```
 
-### More examples
-
-Exporting clients from CSV file:
+Let's take for example a method which imports records from a CSV file:
 
 ```ruby
 #...
 def call
   File.foreach(file) do |line|
     -> { values_from(line) }
-      .>> { |e| match_fields_for(e) }
-      .>> { |e| sanitize(e) }
-      .>> { |e| Save.new(attributes: sanitize(e)) }
-      .>> { |save| save.call }.unwrap
+      .>> { |values| match_fields_for(values) }
+      .>> { |fields| sanitize(fields) }
+      .>> { |fields| Save.new(attributes: fields).call }.unwrap
   end
 end
 ```
 
-Fun with strings:
+The equivalent form would be this:
 
 ```ruby
-module Foo
-  class << self
-    def number; 1 end
-    def answer(x); "So the answer of the life, the universe and everything is... #{x}!" end
+#...
+def call
+  File.foreach(file) do |line|
+    values = values_from(line) }
+    fields = match_fields_for(values)
+    fields = sanitize(fields)
+    Save.new(attributes: fields).call
   end
 end
-
--> { Foo.number }
-  .>> { |e| e + 1 }
-  .>> { |e| e * 21 }
-  .>> { |e| Foo.answer(e) }
-  .>> { |e| e + ' :-)' }
-  .unwrap #=> "So the answer of the life, the universe and everything is... 42! :-)"
 ```
-
 
 ## Backstage
 
