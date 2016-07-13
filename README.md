@@ -1,4 +1,7 @@
 # Piped Ruby
+[![Code Climate](https://codeclimate.com/github/tiagopog/piped_ruby/badges/gpa.svg)](https://codeclimate.com/github/tiagopog/piped_ruby)
+[![Build Status](https://travis-ci.org/tiagopog/piped_ruby.svg?branch=master)](https://travis-ci.org/tiagopog/piped_ruby)
+
 
 ```ruby
 -> { 'Pipe' }.>> { |e| "#{e} things"  }
