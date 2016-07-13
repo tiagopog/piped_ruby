@@ -10,7 +10,8 @@ describe PipedRuby do
       -> { 1 }.>> { |e| e + 1 }.>> { |e| e * 2 }
     end
 
-    it { expect(operation.piped).to eq(4) }
+    it { expect(operation.to_pipe).to eq(4) }
+    it { expect(operation.piped).to eq(2) }
     it { expect(operation.unwrap).to eq(4) }
 
     it 'returns a reference from self (Proc)' do
@@ -20,8 +21,8 @@ describe PipedRuby do
     context 'when it is the first pipe' do
       it 'calls the current block' do
         first = -> { 'Foo' }
-        expect(first.>> { |e| "#{e}bar" }.piped).to eq('Foobar')
-        expect(first.piped).to eq('Foo')
+        expect(first.unwrap).to eq('Foo')
+        expect(first.>> { |e| "#{e}bar" }.piped).to eq('Foo')
       end
     end
   end

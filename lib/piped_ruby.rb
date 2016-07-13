@@ -1,16 +1,21 @@
 require 'piped_ruby/version'
 
 module PipedRuby
-  attr_accessor :piped
+  attr_accessor :to_pipe, :piped
 
   def >>(&chained)
-    self.piped = call if piped.nil?
-    chained.piped = chained.call(piped)
+    self.to_pipe = call if to_pipe.nil?
+
+    chained.piped   = to_pipe
+    chained.to_pipe = chained.call(to_pipe)
+
     chained
   end
 
   def unwrap
-    piped || call
+    to_pipe || call(piped)
+  rescue ArgumentError
+    call
   end
 end
 

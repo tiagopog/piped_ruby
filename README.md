@@ -64,8 +64,7 @@ def call
       .>> { |e| match_fields_for(e) }
       .>> { |e| sanitize(e) }
       .>> { |e| Save.new(attributes: sanitize(e)) }
-      .>> { |save| save.call }
-      .unwrap
+      .>> { |save| save.call }.unwrap
   end
 end
 ```
