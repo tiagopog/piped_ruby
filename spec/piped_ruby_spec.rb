@@ -36,11 +36,14 @@ describe PipedRuby do
 
     context 'when piped value is nil' do
       it 'calls the current block' do
-        expect(-> { 'Lorem' }.>> { |e| "#{e} ipsum" }
-                             .>> { |e| "#{e} sit" }
-                             .>> { |e| "#{e} amet" }
-                             .>> { |e| puts e } # Prints "Lorem ipsum sit amet" and pipes nil
-                             .>> { |e| 1 }.unwrap).to eq(1)
+        expect(
+          -> { 'Lorem' }
+            .>> { |e| "#{e} ipsum" }
+            .>> { |e| "#{e} sit" }
+            .>> { |e| "#{e} amet" }
+            .>> { |e| puts e } # Prints "Lorem ipsum sit amet" and pipes nil
+            .>> { |e| 1 }.unwrap
+        ).to eq(1)
       end
     end
 

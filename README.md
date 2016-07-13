@@ -4,9 +4,10 @@
 
 
 ```ruby
--> { 'Pipe' }.>> { |e| "#{e} things"  }
-             .>> { |e| "#{e} in Ruby!" }
-             .unwrap #=> "Pipe things in Ruby!"
+-> { 'Pipe' }
+  .>> { |e| "#{e} things"  }
+  .>> { |e| "#{e} in Ruby!" }
+  .unwrap #=> "Pipe things in Ruby!"
 ```
 
 Piped Ruby is a tiny piece of code that aims to bring the beauty of pipe operators and data transformation to your Ruby application.
@@ -40,9 +41,10 @@ require 'piped_ruby'
 With Piped Ruby doing this:
 
 ```ruby
--> { some_text.upcase }.>> { |e| MyModule.method_a(e)  }
-                       .>> { |e| MyModule.method_b(e, "something") }
-                       .>> { |e| MyModule.method_c(e) { |c| do_something3(c) } }.unwrap
+-> { some_text.upcase }
+  .>> { |e| MyModule.method_a(e) }
+  .>> { |e| MyModule.method_b(e, "something") }
+  .>> { |e| MyModule.method_c(e) { |c| do_something3(c) } }.unwrap
 ```
 
 ...is equivalent to this:
@@ -81,11 +83,12 @@ module Foo
   end
 end
 
--> { Foo.number }.>> { |e| e + 1 }
-                 .>> { |e| e * 21 }
-                 .>> { |e| Foo.answer(e) }
-                 .>> { |e| e + ' :-)' }
-                 .unwrap #=> "So the answer of the life, the universe and everything is... 42! :-)"
+-> { Foo.number }
+  .>> { |e| e + 1 }
+  .>> { |e| e * 21 }
+  .>> { |e| Foo.answer(e) }
+  .>> { |e| e + ' :-)' }
+  .unwrap #=> "So the answer of the life, the universe and everything is... 42! :-)"
 ```
 
 
@@ -110,8 +113,7 @@ operation.>> { |e| puts e }.unwrap #=> Prints "Foobar" and returns nil
 ## TODO
 
 - [ ] Write more cool examples in README;
-- [ ] Introduce something similar to Elixir's Streams;
-- [ ] Store Procs and be able to unwrap a returning value in different points of execution.
+- [ ] Introduce something similar to Elixir's Streams.
 
 ## Contributing
 
