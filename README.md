@@ -1,8 +1,8 @@
 # Piped Ruby
 
 ```ruby
--> { "Pipe" }.| { |e| "#{e} things"  }
-             .| { |e| "#{e} in Ruby!" }
+-> { 'Pipe' }.>> { |e| "#{e} things"  }
+             .>> { |e| "#{e} in Ruby!" }
              .unwrap #=> "Pipe things in Ruby!"
 ```
 
@@ -39,8 +39,7 @@ With Piped Ruby doing this:
 ```ruby
 -> { some_text.upcase }.>> { |e| MyModule.method_a(e)  }
                        .>> { |e| MyModule.method_b(e, "something") }
-                       .>> { |e| MyModule.method_c(e) { |c| do_something3(c) } }
-                       .unwrap
+                       .>> { |e| MyModule.method_c(e) { |c| do_something3(c) } }.unwrap
 ```
 
 ...is equivalent to this:
