@@ -6,7 +6,7 @@
              .unwrap #=> "Pipe things in Ruby!"
 ```
 
-Piped Ruby is a tiny piece of code that tries to bring an awesome feature to Ruby: pipe operations.
+Piped Ruby is a tiny piece of code that aims to bring the beauty of pipe operators and data transformation to your Ruby application.
 
 Credit to [Elixir's Pipe Operator](http://elixir-lang.org/getting-started/enumerables-and-streams.html#the-pipe-operator) and [Chainable Methods](https://github.com/akitaonrails/chainable_methods) gem which were the source of inspiration for this gem :-)
 
@@ -37,9 +37,9 @@ require 'piped_ruby'
 With Piped Ruby doing this:
 
 ```ruby
--> { some_text.upcase }.| { |e| MyModule.method_a(e)  }
-                       .| { |e| MyModule.method_b(e, "something") }
-                       .| { |e| MyModule.method_c(e) { |c| do_something3(c) } }
+-> { some_text.upcase }.>> { |e| MyModule.method_a(e)  }
+                       .>> { |e| MyModule.method_b(e, "something") }
+                       .>> { |e| MyModule.method_c(e) { |c| do_something3(c) } }
                        .unwrap
 ```
 
@@ -54,14 +54,24 @@ d = MyModule.method_c(c) { |c| do_something3(c) }
 
 ### More examples
 
-Get max element of a given array:
+Exporting clients from CSV file:
+
 ```ruby
--> { [1, 2, 3, 4] }.| { |e| e.length == 4 ? e.push(5) : e }
-                   .| { |e| e.max }
-                   .unwrap #=> 5
+#...
+def call
+  File.foreach(file) do |line|
+    -> { values_from(line) }
+      .>> { |e| match_fields_for(e) }
+      .>> { |e| sanitize(e) }
+      .>> { |e| Save.new(attributes: sanitize(e)) }
+      .>> { |save| save.call }
+      .unwrap
+  end
+end
 ```
 
-Work with strings:
+Fun with strings:
+
 ```ruby
 module Foo
   class << self
@@ -70,19 +80,20 @@ module Foo
   end
 end
 
--> { Foo.number }.| { |e| e + 1 }
-                 .| { |e| e * 21 }
-                 .| { |e| Foo.answer(e) }
-                 .| { |e| e + ' :-)' }
+-> { Foo.number }.>> { |e| e + 1 }
+                 .>> { |e| e * 21 }
+                 .>> { |e| Foo.answer(e) }
+                 .>> { |e| e + ' :-)' }
                  .unwrap #=> "So the answer of the life, the universe and everything is... 42! :-)"
 ```
+
 
 ## Backstage
 
 Pipe operations happen between Proc objects (blocks). After requiring the gem every Proc in your Ruby program will be capable to start a pipe operation.
 
 ```ruby
-operation = -> { 'Foo' }.| { |e| "#{e}bar" }
+operation = -> { 'Foo' }.>> { |e| "#{e}bar" }
 operation.class #=> Proc
 operation.unwrap #=> "Foobar"
 ```
@@ -90,15 +101,16 @@ operation.unwrap #=> "Foobar"
 The `PipedRuby#unwrap` method is the way to get the returning value from the last evaluated block:
 
 ```ruby
-operation = -> { 'Foo' }.| { |e| "#{e}bar" }
-operation.| { |e| puts e } #=> Prints "Foobar" and returns a Proc object
-operation.| { |e| puts e }.unwrap #=> Prints "Foobar" and returns nil
+operation = -> { 'Foo' }.>> { |e| "#{e}bar" }
+operation.>> { |e| puts e } #=> Prints "Foobar" and returns a Proc object
+operation.>> { |e| puts e }.unwrap #=> Prints "Foobar" and returns nil
 ```
 
 ## TODO
 
 - [ ] Write more cool examples in README;
-- [ ] Introduce something similar to Elixir's Streams.
+- [ ] Introduce something similar to Elixir's Streams;
+- [ ] Store Procs and be able to unwrap a returning value in different points of execution.
 
 ## Contributing
 
