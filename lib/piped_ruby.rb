@@ -3,7 +3,7 @@ require 'piped_ruby/version'
 module PipedRuby
   attr_accessor :piped
 
-  def |(&chained)
+  def >>(&chained)
     self.piped = call if piped.nil?
     chained.piped = chained.call(piped)
     chained

@@ -5,9 +5,9 @@ describe PipedRuby do
     expect(PipedRuby::VERSION).not_to be nil
   end
 
-  describe '#|' do
+  describe '#>>' do
     let(:operation) do
-      -> { 1 }.| { |e| e + 1 }.| { |e| e * 2 }
+      -> { 1 }.>> { |e| e + 1 }.>> { |e| e * 2 }
     end
 
     it { expect(operation.piped).to eq(4) }
@@ -20,7 +20,7 @@ describe PipedRuby do
     context 'when it is the first pipe' do
       it 'calls the current block' do
         first = -> { 'Foo' }
-        expect(first.| { |e| "#{e}bar" }.piped).to eq('Foobar')
+        expect(first.>> { |e| "#{e}bar" }.piped).to eq('Foobar')
         expect(first.piped).to eq('Foo')
       end
     end
@@ -35,20 +35,20 @@ describe PipedRuby do
 
     context 'when piped value is nil' do
       it 'calls the current block' do
-        expect(-> { 'Lorem' }.| { |e| "#{e} ipsum" }
-                             .| { |e| "#{e} sit" }
-                             .| { |e| "#{e} amet" }
-                             .| { |e| puts e } # Prints "Lorem ipsum sit amet" and pipes nil
-                             .| { |e| 1 }.unwrap).to eq(1)
+        expect(-> { 'Lorem' }.>> { |e| "#{e} ipsum" }
+                             .>> { |e| "#{e} sit" }
+                             .>> { |e| "#{e} amet" }
+                             .>> { |e| puts e } # Prints "Lorem ipsum sit amet" and pipes nil
+                             .>> { |e| 1 }.unwrap).to eq(1)
       end
     end
 
     context 'when piped' do
       it 'returns the piped value from the last block' do
-        expect(-> { 'Foobar' }.| { 'Bar' }.unwrap).to eq('Bar')
-        expect(-> { 'Foo' }.| { |e| "#{e}bar" }.unwrap).to eq('Foobar')
-        expect(-> { 1 }.| { |e| e * 4 }
-                       .| { |e| e == 4 ? e / 2 : e }.unwrap).to eq(2)
+        expect(-> { 'Foobar' }.>> { 'Bar' }.unwrap).to eq('Bar')
+        expect(-> { 'Foo' }.>> { |e| "#{e}bar" }.unwrap).to eq('Foobar')
+        expect(-> { 1 }.>> { |e| e * 4 }
+                       .>> { |e| e == 4 ? e / 2 : e }.unwrap).to eq(2)
       end
     end
   end
